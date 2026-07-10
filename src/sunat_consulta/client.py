@@ -34,6 +34,7 @@ class SunatClient:
     )
 
     def __init__(self, timeout: float = 25.0) -> None:
+        self._session_ready = False
         self._client = httpx.AsyncClient(
             timeout=httpx.Timeout(timeout),
             follow_redirects=True,
@@ -73,6 +74,8 @@ class SunatClient:
 
         if not token:
             raise SunatValidationError("El token no puede estar vacío.")
+
+        await self._ensure_session()
 
         payload = {
             "accion": "consPorTipdoc",
@@ -306,6 +309,25 @@ class SunatClient:
         except httpx.RequestError as exc:
             raise SunatUpstreamError(
                 "No fue posible comunicarse con SUNAT."
+            ) from exc
+
+    async def _ensure_session(self) -> None:
+        if self._session_ready:
+            return
+
+        try:
+            response = await self._client.get(self.URL)
+            response.raise_for_status()
+            self._session_ready = True
+
+        except httpx.HTTPStatusError as exc:
+            raise SunatUpstreamError(
+                f"SUNAT respondió HTTP {exc.response.status_code}."
+            ) from exc
+
+        except httpx.RequestError as exc:
+            raise SunatUpstreamError(
+                "No fue posible iniciar sesión con SUNAT."
             ) from exc
 
     @staticmethod

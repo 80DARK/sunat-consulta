@@ -17,6 +17,7 @@ def test_consultar_dni_fetches_all_ruc_candidates(monkeypatch):
     async def run_test():
         client = SunatClient()
         detail_calls: list[tuple[str, str]] = []
+        session_calls = 0
 
         async def fake_post(data):
             assert "ruc_preferido" not in data
@@ -38,11 +39,16 @@ def test_consultar_dni_fetches_all_ruc_candidates(monkeypatch):
                 """,
             )
 
+        async def fake_ensure_session():
+            nonlocal session_calls
+            session_calls += 1
+
         async def fake_consultar_detalle_ruc(ruc: str, num_rnd: str):
             detail_calls.append((ruc, num_rnd))
             return SunatData(ruc=ruc, principal={"Número de RUC": ruc})
 
         monkeypatch.setattr(client, "_post", fake_post)
+        monkeypatch.setattr(client, "_ensure_session", fake_ensure_session)
         monkeypatch.setattr(
             client,
             "_consultar_detalle_ruc",
@@ -66,5 +72,6 @@ def test_consultar_dni_fetches_all_ruc_candidates(monkeypatch):
             "10085324824",
             "10444555666",
         ]
+        assert session_calls == 1
 
     asyncio.run(run_test())

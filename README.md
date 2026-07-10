@@ -58,6 +58,21 @@ result = await client.consultar_dni(
 Si SUNAT devuelve varios RUC para el mismo DNI, el cliente consulta todos y los
 retorna en `data_items`.
 
+Los ejemplos de `example/` reciben datos por argumentos o variables de entorno:
+
+```bash
+python example/example_dni.py 41215821 --token "TOKEN_MANUAL"
+python example/consultar_ruc.py 20100070970 --token "TOKEN_MANUAL"
+```
+
+Tambien puedes usar variables:
+
+```bash
+set SUNAT_TOKEN=TOKEN_MANUAL
+set SUNAT_DNI=41215821
+python example/example_dni.py
+```
+
 ## Uso como API
 
 Levanta el servidor:
@@ -92,6 +107,12 @@ Para consultar por DNI mediante la API:
 curl -X POST http://127.0.0.1:8000/v1/dni \
   -H "Content-Type: application/json" \
   -d "{\"dni\":\"08532482\",\"token\":\"TOKEN_MANUAL\"}"
+```
+
+El ejemplo HTTP permite cambiar el puerto de la API:
+
+```bash
+python example/consumir_api.py --base-url http://127.0.0.1:8922 --dni 41215821 --token "TOKEN_MANUAL"
 ```
 
 ## Estructura
