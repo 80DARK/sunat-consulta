@@ -1,3 +1,9 @@
+#Si te preguntas por el parametro TOKEN, este en realidad no es valido por
+#el backend de SUNAT, pero es necesario para poder usar el paquete importable.
+#ya que el backend de SUNAT espera en el payload ese parametro, y si no lo envias,
+#el backend de SUNAT devuelve un error 400.
+
+
 import argparse
 import asyncio
 import json
