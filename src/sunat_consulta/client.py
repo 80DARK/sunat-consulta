@@ -67,7 +67,6 @@ class SunatClient:
         self,
         dni: str,
         token: str,
-        ruc_preferido: str | None = None,
     ) -> ConsultaResponse:
         dni = validate_dni(dni)
         token = token.strip()
@@ -109,18 +108,6 @@ class SunatClient:
             raise SunatResponseChanged(
                 "SUNAT no devolvió numRnd para continuar con el detalle del RUC."
             )
-
-        if ruc_preferido:
-            ruc_preferido = validate_ruc(ruc_preferido)
-            candidates = [
-                item for item in candidates
-                if item.ruc == ruc_preferido
-            ]
-
-            if not candidates:
-                raise SunatNotFound(
-                    "El RUC indicado no pertenece a los resultados del DNI."
-                )
 
         data_items: list[SunatData] = []
 

@@ -55,6 +55,9 @@ result = await client.consultar_dni(
 )
 ```
 
+Si SUNAT devuelve varios RUC para el mismo DNI, el cliente consulta todos y los
+retorna en `data_items`.
+
 ## Uso como API
 
 Levanta el servidor:
@@ -81,6 +84,14 @@ Ejemplo:
 curl -X POST http://127.0.0.1:8000/v1/ruc \
   -H "Content-Type: application/json" \
   -d "{\"ruc\":\"20100070970\",\"token\":\"TOKEN_MANUAL\"}"
+```
+
+Para consultar por DNI mediante la API:
+
+```bash
+curl -X POST http://127.0.0.1:8000/v1/dni \
+  -H "Content-Type: application/json" \
+  -d "{\"dni\":\"08532482\",\"token\":\"TOKEN_MANUAL\"}"
 ```
 
 ## Estructura

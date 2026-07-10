@@ -43,7 +43,6 @@ class ConsultaResponse(BaseModel):
 class ConsultaDniRequest(BaseModel):
     dni: str
     token: str = Field(min_length=1)
-    ruc_preferido: str | None = None
 
 
 class ConsultaRucRequest(BaseModel):

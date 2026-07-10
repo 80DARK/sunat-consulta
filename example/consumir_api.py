@@ -37,15 +37,11 @@ async def consultar_ruc(
 async def consultar_dni(
     client: httpx.AsyncClient,
     dni: str,
-    ruc_preferido: str | None = None,
 ) -> None:
     payload = {
         "dni": dni,
         "token": TOKEN,
     }
-
-    if ruc_preferido:
-        payload["ruc_preferido"] = ruc_preferido
 
     response = await client.post("/v1/dni", json=payload)
 
@@ -72,12 +68,7 @@ async def main() -> None:
             #     dni="08532482",
             # )
 
-            # Ejemplo si el DNI tiene varios RUC:
-            # await consultar_dni(
-            #     client,
-            #     dni="08532482",
-            #     ruc_preferido="10085324824",
-            # )
+            # Si el DNI tiene varios RUC, la libreria consulta todos.
 
         except httpx.ConnectError:
             print(

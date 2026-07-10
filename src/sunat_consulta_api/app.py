@@ -68,7 +68,6 @@ async def consultar_dni(
         return await client.consultar_dni(
             dni=body.dni,
             token=body.token,
-            ruc_preferido=body.ruc_preferido,
         )
 
     except SunatValidationError as exc:
