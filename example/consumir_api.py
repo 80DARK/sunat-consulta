@@ -5,8 +5,7 @@ import httpx
 
 
 BASE_URL = "http://127.0.0.1:8000"
-CAPTCHA_CODE = "REEMPLAZA_CON_CODIGO_MANUAL"
-TOKEN = ""
+TOKEN = "REEMPLAZA_CON_TOKEN_NO_VACIO"
 
 
 async def health_check(client: httpx.AsyncClient) -> None:
@@ -26,7 +25,6 @@ async def consultar_ruc(
         "/v1/ruc",
         json={
             "ruc": ruc,
-            "captcha_code": CAPTCHA_CODE,
             "token": TOKEN,
         },
     )
@@ -43,7 +41,6 @@ async def consultar_dni(
 ) -> None:
     payload = {
         "dni": dni,
-        "captcha_code": CAPTCHA_CODE,
         "token": TOKEN,
     }
 

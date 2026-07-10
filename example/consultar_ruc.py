@@ -1,8 +1,8 @@
 import asyncio
 import json
 
-from src.sunat_consulta import SunatClient
-from src.sunat_consulta.exceptions import SunatError
+from sunat_consulta import SunatClient
+from sunat_consulta.exceptions import SunatError
 
 
 RUC = "20100070970"
